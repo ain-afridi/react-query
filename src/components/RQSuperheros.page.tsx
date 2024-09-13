@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 
 interface dataProps {
@@ -12,17 +12,28 @@ const SuperHerosApi = () => {
 }
 
 function RQSuperHeros() {
+
+  const onSuccess = (data: AxiosResponse) => {
+    console.log("successful...", data);
+  }
+  const onError = (error: AxiosError) => { 
+    console.log("Error", error);
+    
+  }
+
   const { isLoading, data, isError, error, isFetching, refetch } = useQuery(
     "super-heros",
     SuperHerosApi,
     {
-      enabled: false,
+      // enabled: false,
       // staleTime: 3000
       // cacheTime: 5000,
       // refetchOnMount: "always",
       // refetchOnWindowFocus: "always",
       // refetchInterval: 2000,
-      // refetchIntervalInBackground: true
+      // refetchIntervalInBackground: true,
+      onSuccess,
+      onError
 
     }
   );
