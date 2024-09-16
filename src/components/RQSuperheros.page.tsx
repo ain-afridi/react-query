@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
 interface dataProps {
@@ -13,7 +13,7 @@ const SuperHerosApi = () => {
 
 function RQSuperHeros() {
 
-  const onSuccess = (data: AxiosResponse) => {
+  const onSuccess = (data: string[]) => {
     console.log("successful...", data);
   }
   const onError = (error: AxiosError) => { 
@@ -33,7 +33,10 @@ function RQSuperHeros() {
       // refetchInterval: 2000,
       // refetchIntervalInBackground: true,
       onSuccess,
-      onError
+      onError,
+      select: (data) => {
+        return data.data.map((hero: dataProps) => hero.name);
+      }
 
     }
   );
@@ -49,13 +52,19 @@ function RQSuperHeros() {
     return <h2>{(error as AxiosError)?.message || "Something went wrong!"}</h2>;
   }
 
+
   // console.log(data)
   return (
     <div>
       <button onClick={() => refetch()}>Fetch Heros</button>
       <h1>RQSuperHeros Page</h1>
-      {data?.data.map((hero: dataProps) => (
+
+      {/* {data?.data.map((hero: dataProps) => (
         <div key={hero.name}>{hero.name}</div>
+      ))} */}
+
+      {data?.map((heroName: string) => (
+        <div key={heroName}>{heroName}</div>
       ))}
     </div>
   );
