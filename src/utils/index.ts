@@ -8,3 +8,13 @@ export interface IFriends {
     id: number;
     name: string;
 }
+
+export interface IUsers {
+    id: string;
+    channelId: string
+} 
+
+export interface IChannels {
+    id: string;
+    courses: string[]
+}
