@@ -1,5 +1,6 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { useCustomQuery } from "../hooks/useCustomQuery";
+import { Link } from "react-router-dom";
 
 interface dataProps {
   id: number;
@@ -41,7 +42,9 @@ function RQSuperHeros() {
       <h1>RQSuperHeros Page</h1>
 
       {data?.data.map((hero: dataProps) => (
-        <div key={hero.name}>{hero.name}</div>
+        <div key={hero.name}>
+          <Link to={`/super-hero/${hero.id}`}>{hero.name}</Link>
+        </div>
       ))}
 
       {/* {data?.map((heroName: string) => (
