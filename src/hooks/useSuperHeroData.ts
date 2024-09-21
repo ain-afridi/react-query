@@ -1,5 +1,6 @@
 import axios from "axios"
-import { useQuery, UseQueryOptions } from "react-query"
+import { useQuery, UseQueryOptions, useQueryClient } from "react-query"
+import { ISuperHero } from "../utils";
 
 const fetchSuperHero = ({ queryKey }: UseQueryOptions) => {
     
@@ -9,5 +10,18 @@ const fetchSuperHero = ({ queryKey }: UseQueryOptions) => {
 }
 
 export const useSuperHeroData = (heroId: string) => {
-    return useQuery(['super-hero', heroId], fetchSuperHero)
+    const queryClient = useQueryClient();
+    return useQuery<{ data: ISuperHero } | undefined>(['super-hero', heroId], fetchSuperHero, {
+        initialData: () => {
+            const hero = queryClient.getQueryData<{ data: ISuperHero[] }>('super-heros')?.data?.find((x: ISuperHero) => x.id === parseInt(heroId));
+
+            if (hero) {
+                return {
+                    data: hero
+                }
+            } else {
+                return undefined
+            }
+        }
+    })
 }
