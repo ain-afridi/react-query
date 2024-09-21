@@ -3,9 +3,7 @@ import { useQuery, UseQueryOptions, useQueryClient } from "react-query"
 import { ISuperHero } from "../utils";
 
 const fetchSuperHero = ({ queryKey }: UseQueryOptions) => {
-    
     const heroId = queryKey ? queryKey[1] : 0;
-    
     return axios.get(`http://localhost:4000/superheroes/${heroId}`)
 }
 

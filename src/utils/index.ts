@@ -18,3 +18,8 @@ export interface IChannels {
     id: string;
     courses: string[]
 }
+
+export interface IColors {
+    id: string;
+    label: string;
+}
