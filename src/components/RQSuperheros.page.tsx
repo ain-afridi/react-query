@@ -1,6 +1,8 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { useCustomQuery } from "../hooks/useCustomQuery";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { AddSuperHerosData } from "../hooks/useSuperHeroData";
 
 interface dataProps {
   id: number;
@@ -11,6 +13,8 @@ interface dataProps {
 
 
 function RQSuperHeros() {
+  const [name, setName] = useState("")
+  const [alterEgo, setAlterEgo] = useState("")
 
   const onSuccess = (data: AxiosResponse) => {
     console.log("successful...", data);
@@ -22,6 +26,8 @@ function RQSuperHeros() {
 
   const { isLoading, data, isError, error, isFetching, refetch } =
     useCustomQuery(onSuccess, onError);
+  
+  const {mutate: addHero} = AddSuperHerosData();
 
   console.log({isLoading, isFetching});
   
@@ -34,12 +40,30 @@ function RQSuperHeros() {
     return <h2>{(error as AxiosError)?.message || "Something went wrong!"}</h2>;
   }
 
+  const handleSubmit = () => {
+    addHero({name, alterEgo})
+  }
+
 
   // console.log(data)
   return (
     <div>
       <button onClick={() => refetch()}>Fetch Heros</button>
       <h1>RQSuperHeros Page</h1>
+
+      <div style={{ display: "flex", gap: "10px" }}>
+        <input
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          name="alterEgo"
+          value={alterEgo}
+          onChange={(e) => setAlterEgo(e.target.value)}
+        />
+        <button onClick={handleSubmit}>Add Hero</button>
+      </div>
 
       {data?.data.map((hero: dataProps) => (
         <div key={hero.name}>

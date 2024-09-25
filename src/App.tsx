@@ -10,6 +10,7 @@ import ParallelQuery from './components/ParallelQuery.page';
 import DynamicParallelQueries from './components/DynamicParallelQueries';
 import DependentQuery from './components/DependentQuery.page';
 import PaginatedQueries from './components/PaginatedQueries.page';
+import InfiniteQueries from './components/InfiniteQueries.page';
 
 const queryClient = new QueryClient();
 
@@ -41,11 +42,12 @@ function App() {
         </nav>
         <Routes>
           <Route path="/super-hero/:heroId" element={<RQSuperhero />} />
+          <Route path="/infinite-queries" element={<InfiniteQueries />} />
           <Route
             path="/dynamic-parallel-queries"
             element={<DynamicParallelQueries heroId={[1, 3]} />}
           />
-          <Route path="/paginated-queries" element={<PaginatedQueries/>} />
+          <Route path="/paginated-queries" element={<PaginatedQueries />} />
           <Route
             path="/dependent-query"
             element={<DependentQuery email="vishwas@example.com" />}

@@ -4,6 +4,11 @@ export interface ISuperHero {
     alterEgo: string
 }
 
+export interface IAddSuperHero {
+    name: string;
+    alterEgo: string
+}
+
 export interface IFriends {
     id: number;
     name: string;
@@ -12,7 +17,7 @@ export interface IFriends {
 export interface IUsers {
     id: string;
     channelId: string
-} 
+}
 
 export interface IChannels {
     id: string;
@@ -22,4 +27,13 @@ export interface IChannels {
 export interface IColors {
     id: string;
     label: string;
+}
+
+export interface IInfiniteQueryResponse {
+    data: IColors[]
+    first: number
+    items: number
+    last: number
+    next: number
+    pages: number
 }
