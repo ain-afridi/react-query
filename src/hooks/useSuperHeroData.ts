@@ -29,5 +29,10 @@ export const useSuperHeroData = (heroId: string) => {
 }
 
 export const AddSuperHerosData = () => {
-    return useMutation(addSuperHero)
+    const queryClient = useQueryClient();
+    return useMutation(addSuperHero, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('super-heros')
+        }
+    })
 }
