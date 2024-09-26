@@ -8,7 +8,7 @@ const fetchSuperHero = ({ queryKey }: UseQueryOptions) => {
 }
 
 const addSuperHero = (payload: IAddSuperHero) => {
-    return axios.post('http://localhost:4000/superheroes',payload)
+    return axios.post('http://localhost:4000/superheroes', payload)
 }
 
 export const useSuperHeroData = (heroId: string) => {
@@ -35,19 +35,42 @@ interface SuperHeroQueryData {
 export const AddSuperHerosData = () => {
     const queryClient = useQueryClient();
     return useMutation(addSuperHero, {
-        onSuccess: (data) => {
-            // queryClient.invalidateQueries('super-heros')
-            queryClient.setQueryData<SuperHeroQueryData>('super-heros',(oldQueryData) => {
+        // onSuccess: (data) => {
+        //     // queryClient.invalidateQueries('super-heros')
+        //     queryClient.setQueryData<SuperHeroQueryData>('super-heros',(oldQueryData) => {
+        //         if (oldQueryData)
+        //         return {
+        //             ...oldQueryData,
+        //             data: [...oldQueryData.data, data.data]
+        //             }
+        //         else return {
+        //             data: []
+        //         }
+        //     })
+        // },
+        onMutate: async (newHero) => {
+            await queryClient.cancelQueries('super-heros');
+            const previousHeroData = queryClient.getQueryData('super-heros');
+            queryClient.setQueryData<SuperHeroQueryData>('super-heros', (oldQueryData) => {
                 if (oldQueryData)
-                return {
-                    ...oldQueryData,
-                    data: [...oldQueryData.data, data.data]
+                    return {
+                        ...oldQueryData,
+                        data: [...oldQueryData.data,{ id: oldQueryData.data.length+1, ...newHero}]
                     }
                 else return {
                     data: []
                 }
             })
 
+            return {
+                previousHeroData
+            }
+        },
+        onError: (_error, _hero, context) => {
+            queryClient.setQueryData('super-heros', context?.previousHeroData)
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries('super-heros')
         }
     })
 }
