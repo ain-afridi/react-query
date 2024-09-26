@@ -1,8 +1,11 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { useQuery } from "react-query";
+import { request } from "../utils/axios-utils";
 
 const SuperHerosApi = () => {
-    return axios.get(`http://localhost:4000/superheroes`)
+
+    return request({ url: '/superheroes', method: 'get'})
+    // return axios.get(`http://localhost:4000/superheroes`)
 }
 
 export const useCustomQuery = (onSuccess: (data: AxiosResponse) => void, onError: (error: AxiosError) => void) => {

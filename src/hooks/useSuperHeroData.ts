@@ -1,14 +1,20 @@
-import axios from "axios"
+
 import { useQuery, UseQueryOptions, useQueryClient, useMutation } from "react-query"
 import { IAddSuperHero, ISuperHero } from "../utils";
+import { request } from "../utils/axios-utils";
+import axios from "axios";
 
 const fetchSuperHero = ({ queryKey }: UseQueryOptions) => {
     const heroId = queryKey ? queryKey[1] : 0;
+
+    // return request({ url: `/superheroes/${heroId}`})
     return axios.get(`http://localhost:4000/superheroes/${heroId}`)
 }
 
 const addSuperHero = (payload: IAddSuperHero) => {
-    return axios.post('http://localhost:4000/superheroes', payload)
+
+    return request({ url: `superheroes`, method:'POST', data: payload})
+    // return axios.post('http://localhost:4000/superheroes', payload)
 }
 
 export const useSuperHeroData = (heroId: string) => {
