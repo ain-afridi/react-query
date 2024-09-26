@@ -28,11 +28,26 @@ export const useSuperHeroData = (heroId: string) => {
     })
 }
 
+interface SuperHeroQueryData {
+    data: ISuperHero[];
+}
+
 export const AddSuperHerosData = () => {
     const queryClient = useQueryClient();
     return useMutation(addSuperHero, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('super-heros')
+        onSuccess: (data) => {
+            // queryClient.invalidateQueries('super-heros')
+            queryClient.setQueryData<SuperHeroQueryData>('super-heros',(oldQueryData) => {
+                if (oldQueryData)
+                return {
+                    ...oldQueryData,
+                    data: [...oldQueryData.data, data.data]
+                    }
+                else return {
+                    data: []
+                }
+            })
+
         }
     })
 }
